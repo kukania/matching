@@ -3,6 +3,7 @@ package com.kkna.matching;
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,12 +15,21 @@ import com.kkna.matching.matching.StatusComplete;
 import com.kkna.matching.matching.StatusFactory;
 
 import java.util.HashMap;
+=======
+import android.widget.Button;
+import android.widget.LinearLayout;
+
+import com.kkna.matching.matching.MatchingComponent;
+import com.kkna.matching.matching.Option.OptionFactory;
+>>>>>>> 17bc712b16d85c5564c728e4c10065162b7981cc
 
 public class MainActivity extends Activity {
+    LinearLayout body;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+<<<<<<< HEAD
 
         Button btn = (Button) findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -46,5 +56,9 @@ public class MainActivity extends Activity {
         Communication.getInstance().pushPacket(p1);
         Communication.getInstance().pushPacket(p2);
         Communication.getInstance().pushPacket(p3);
+=======
+        body=(LinearLayout)findViewById(R.id.body);
+        MatchingComponent test=OptionFactory.creator("Button","test",body,this.getApplicationContext());
+>>>>>>> 17bc712b16d85c5564c728e4c10065162b7981cc
     }
 }
