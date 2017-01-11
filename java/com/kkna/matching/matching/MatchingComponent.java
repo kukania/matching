@@ -2,6 +2,8 @@ package com.kkna.matching.matching;
 
 import android.view.View;
 
+import com.kkna.matching.matching.MatchingChildComponent.MatchingChildComponent;
+
 /**
  * Option && GroupComponent interface
  *

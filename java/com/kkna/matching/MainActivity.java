@@ -27,8 +27,16 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         body=(LinearLayout)findViewById(R.id.body);
+
         ComponentButton cpb=(ComponentButton) ComponentFactory.creator("Button",this,3);
-        cpb.changeOrientation(MatchingChildComponent.orientation.VERTICAL);
+        cpb.config("MultiSelect");
+        cpb.handlerSetting(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("test","hello");
+            }
+        });
+        cpb.textSetting(0,"hello").textSetting(1,"world").textSetting(2,"fucking");
         body.addView(cpb.getView());
     }
 }

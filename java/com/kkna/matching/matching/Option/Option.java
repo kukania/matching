@@ -3,6 +3,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.kkna.matching.matching.MatchingChildComponent.MatchingChildComponent;
 import com.kkna.matching.matching.MatchingComponent;
 
 /**
@@ -25,5 +26,8 @@ public abstract class Option implements MatchingComponent {
     public String getName(){
         return "Option";
     }
+
     public abstract void viewSetting(LinearLayout.LayoutParams params);
+    public abstract void setData(Object p);
+    public abstract Object getData();
 }

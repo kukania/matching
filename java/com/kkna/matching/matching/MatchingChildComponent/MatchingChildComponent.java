@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.kkna.matching.matching.MatchingComponent;
+import com.kkna.matching.matching.Option.Option;
 import com.kkna.matching.matching.Option.OptionButton;
 
 import java.util.ArrayList;
@@ -16,33 +17,21 @@ import java.util.Collections;
 /**
  * Created by angks on 2017-01-11.
  */
-public class MatchingChildComponent implements MatchingComponent{
+public abstract class MatchingChildComponent implements MatchingComponent{
     public enum orientation{HORIZONTAL,VERTICAL}
-    @Override
-    public String getPacketData() {
-        String temp="",get="";
-        for(int i=0; i<childList.size();i++){
-            if((get=childList.get(i).getPacketData())!=null)
-                temp+=get;
-        }
-        return temp;
-    }
     @Override
     public View getView() {
         notifyView();
         return body;
     }
-
     @Override
     public String getName(){
         return "MatchingChildComponent";
     }
-
     @Override
     public void setPriority(int priority) {
         this.priority=priority;
     }
-
     @Override
     public int getPriority() {
         return priority;
@@ -101,8 +90,11 @@ public class MatchingChildComponent implements MatchingComponent{
         childList.add(view);
         return true;
     }
+
+    public MatchingComponent get(int index){return childList.get(index);}
+
     public void changeOrientation(orientation a){
-        LinearLayout.LayoutParams params;
+        LinearLayout.LayoutParams params=null;
         if(a==orientation.HORIZONTAL){
             if(body.getOrientation()==LinearLayout.HORIZONTAL)
                 return;
@@ -111,7 +103,6 @@ public class MatchingChildComponent implements MatchingComponent{
                 params.weight=1;
                 body.setLayoutParams(params);
                 body.setOrientation(LinearLayout.HORIZONTAL);
-                //change child view
             }
         }
         else if(a==orientation.VERTICAL){
@@ -122,11 +113,21 @@ public class MatchingChildComponent implements MatchingComponent{
                 params.weight=1;
                 body.setLayoutParams(params);
                 body.setOrientation(LinearLayout.VERTICAL);
-                //change child view
             }
+        }
+
+        for (MatchingComponent mc: childList) {
+            if(mc.getName()=="Option"){
+                ((Option)mc).viewSetting(params);
+            }
+            else
+                ((MatchingChildComponent)mc).changeOrientation(a);
         }
         return;
     }
+
+    public abstract void config(Object ...params);
+
     protected MatchingChildComponent(Context context){
         body=new LinearLayout(context);
         LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
