@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 /**
  * Created by angks on 2017-01-03.
  */
-public class ButtonComponent extends OptionComponent {
+public class OptionButton extends Option {
     private String LOGT="BTN component";
     private LinearLayout parent;
     private Button button=null;
@@ -22,31 +22,31 @@ public class ButtonComponent extends OptionComponent {
     private int data;
 
     public boolean check=false;
-    public ButtonComponent(String text, LinearLayout parent , Context mycontext){
+    public OptionButton(String text, LinearLayout parent , Context mycontext){
         context=mycontext; this.parent=parent;
-
         basicParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
 
         if((((LinearLayout)parent).getOrientation())== LinearLayout.HORIZONTAL){
             basicParams.width=0;
-            Log.d(LOGT,"Horizontal");
+           // Log.d(LOGT,"Horizontal");
         }
         else{
             basicParams.height=0;
-            Log.d(LOGT,"Vertical");
+            //Log.d(LOGT,"Vertical");
         }
         basicParams.weight=1.0f;
         basicParams.gravity= Gravity.CENTER;
         button=new Button(context);
         button.setLayoutParams(basicParams);
-        viewSetting(text);
-        Log.d(LOGT,button.getText().toString());
+        textSetting(text);
+        //Log.d(LOGT,button.getText().toString());
     }
     public void setData(int input){data=input;}
-    public void viewSetting(String text){
+    public void textSetting(String text){
         button.setText(text);
     }
-    public void viewSetting(String text, LinearLayout.LayoutParams params){
+    @Override
+    public void viewSetting(LinearLayout.LayoutParams params){
         if(button!=null){
             button=new Button(context);
         }
@@ -64,4 +64,5 @@ public class ButtonComponent extends OptionComponent {
     public View getView() {
         return button;
     }
+
 }

@@ -6,19 +6,4 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.kkna.matching.MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-<<<<<<< HEAD
-
-    <Button
-        android:id="@+id/btn"
-        android:text="push!!"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
-=======
 </LinearLayout>
->>>>>>> 17bc712b16d85c5564c728e4c10065162b7981cc
