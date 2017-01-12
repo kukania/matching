@@ -1,4 +1,4 @@
-package com.kkna.matching.matching;
+package com.kkna.matching.matching.Packet;
 
 import android.util.Log;
 
@@ -17,7 +17,7 @@ public class StatusFactory {
                     break;
                 case 'c':map.put('c', new StatusComplete());
                     break;
-                case 'w':map.put('w',new StatusWating());
+                case 'w':map.put('w',new StatusWaiting());
                     break;
                 default:
                     Log.e("StatusFactory", "invalid key");
