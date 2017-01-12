@@ -2,8 +2,10 @@ package com.kkna.matching.matching;
 
 import android.view.View;
 
+import com.kkna.matching.matching.MatchingChildComponent.MatchingChildComponent;
+
 /**
- * OptionComponent && GroupComponent interface
+ * Option && GroupComponent interface
  *
  * <pre>
  * <b>History:</b>
@@ -23,4 +25,7 @@ public interface MatchingComponent {
      */
     public String getPacketData();
     public View getView();
+    public String getName();
+    public void setPriority(int priority);
+    public int getPriority();
 }

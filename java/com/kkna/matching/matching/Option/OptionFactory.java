@@ -11,7 +11,7 @@ import com.kkna.matching.matching.MatchingComponent;
 public class OptionFactory {
     public static MatchingComponent creator(String input, String text,LinearLayout parent,Context context){
         if(input.equals("Button")){
-            return new ButtonComponent(text,parent,context);
+            return new OptionButton(text,parent,context);
         }
         return null;
     }
