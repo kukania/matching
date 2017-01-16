@@ -1,6 +1,7 @@
 package com.kkna.matching.matching.MatchingChildComponent;
 
 import android.content.Context;
+import android.widget.LinearLayout;
 
 import com.kkna.matching.matching.MatchingComponent;
 
@@ -9,9 +10,9 @@ import com.kkna.matching.matching.MatchingComponent;
  */
 
 public class ComponentFactory {
-    static public MatchingComponent creator(String input, Context context, int size){
+    static public MatchingComponent creator(String input, int orientation, Context context, int size){
         if(input.equals("Button")){
-            return new ComponentButton(context,size);
+            return new ComponentButton(orientation,context,size);
         }
         return null;
     }

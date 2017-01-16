@@ -1,76 +1,53 @@
 package com.kkna.matching;
 
 import android.app.Activity;
-import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
-<<<<<<< HEAD
-import com.kkna.matching.matching.Packet.PacketCallback;
-import com.kkna.matching.matching.Packet.PacketSender;
-import com.kkna.matching.matching.Packet.Packet;
-
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.kkna.matching.matching.MatchingComponent;
-import com.kkna.matching.matching.Option.OptionFactory;
-import com.kkna.matching.matching.Packet.Status;
-=======
-import com.kkna.matching.matching.Communication;
 import com.kkna.matching.matching.MatchingChildComponent.ComponentButton;
 import com.kkna.matching.matching.MatchingChildComponent.ComponentFactory;
 import com.kkna.matching.matching.MatchingChildComponent.MatchingChildComponent;
-import com.kkna.matching.matching.Packet;
-import com.kkna.matching.matching.Status;
-import com.kkna.matching.matching.StatusComplete;
-import com.kkna.matching.matching.StatusFactory;
 
-import java.util.HashMap;
->>>>>>> 46ed576e3ecf82fde802e2a01aac6df00c29f03c
 
 public class MainActivity extends Activity {
     String LOGT="MAINACTIVITY";
     LinearLayout body;
-    TextView textView;
+    Button testBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-<<<<<<< HEAD
-
-        textView = (TextView)findViewById(R.id.tv);
-        test();
-    }
-
-    private void test(){
-        Log.d("test", "test start!!");
-
-        MatchingComponent mc = null;
-        Packet packet = new Packet(mc);
-        packet.setCallback(new PacketCallback() {
-            @Override
-            public void callbackMethod() {
-                textView.setText("Happy!!");
-            }
-        });
-        packet.send();
-=======
         body=(LinearLayout)findViewById(R.id.body);
+        testBtn=(Button)findViewById(R.id.testBtn);
 
-        ComponentButton cpb=(ComponentButton) ComponentFactory.creator("Button",this,3);
+        final ComponentButton cpb=(ComponentButton) ComponentFactory.creator("Button",body.getOrientation(),this,3);
         cpb.config("MultiSelect");
-        cpb.handlerSetting(new View.OnClickListener() {
+        for(int i=0; i<3; i++) cpb.imgSetting(i, ContextCompat.getDrawable(this, R.drawable.nbtn),ContextCompat.getDrawable(this, R.drawable.sbtn));
+
+        cpb.textSetting(0,"hello").textSetting(1,"world").textSetting(2,"fucking");
+        cpb.valueSetting(0,new Test()).valueSetting(1,new Test()).valueSetting(2,new Test());
+        cpb.changeOrientationOne(MatchingChildComponent.orientation.HORIZONTAL);
+
+        ComponentButton cpb2=(ComponentButton)ComponentFactory.creator("Button",cpb.getOrientation(),this,2);
+        for(int i=0; i<2; i++)cpb2.imgSetting(i, ContextCompat.getDrawable(this, R.drawable.nbtn),ContextCompat.getDrawable(this, R.drawable.sbtn));
+        cpb2.textSetting(0,"t").textSetting(1,"e");
+        cpb2.changeOrientationOne(MatchingChildComponent.orientation.HORIZONTAL);
+        cpb.add(cpb2);
+
+        cpb.changeOrientationAll(MatchingChildComponent.orientation.VERTICAL);
+        body.addView(cpb.getView());
+
+        testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("test","hello");
+                Log.d(LOGT,cpb.getPacketData());
             }
         });
-        cpb.textSetting(0,"hello").textSetting(1,"world").textSetting(2,"fucking");
-        body.addView(cpb.getView());
->>>>>>> 46ed576e3ecf82fde802e2a01aac6df00c29f03c
     }
 }

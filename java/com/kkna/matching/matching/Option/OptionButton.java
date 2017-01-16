@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.kkna.matching.matching.MatchingChildComponent.MatchingChildComponent;
+import com.kkna.matching.matching.MatchingData;
 
 import java.util.ArrayList;
 
@@ -60,9 +61,9 @@ public class OptionButton extends Option {
         });
     }
     @Override
-    public void setData(Object input){data=(int)input;}
+    public void setData(MatchingData input){data=input;}
     @Override
-    public Object getData(){return data;}
+    public MatchingData getData(){return data;}
     @Override
     public void viewSetting(LinearLayout.LayoutParams params){
         if(button==null){
@@ -73,7 +74,7 @@ public class OptionButton extends Option {
     @Override
     public String getPacketData() {
         if(check){
-            return ""+data;
+            return ""+getPriority();
         }
         return null;
     }
@@ -89,6 +90,6 @@ public class OptionButton extends Option {
     private Button button=null;
     private Context context=null;
     private LinearLayout.LayoutParams basicParams;
-    private int data;
+    private MatchingData data;
 
 }
