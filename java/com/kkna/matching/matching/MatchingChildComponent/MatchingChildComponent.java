@@ -17,34 +17,48 @@ import java.util.Collections;
 /**
  * Created by angks on 2017-01-11.
  */
-public abstract class MatchingChildComponent implements MatchingComponent{
-    public enum orientation{HORIZONTAL,VERTICAL}
+
+public abstract class MatchingChildComponent implements MatchingComponent {
+    public enum orientation {HORIZONTAL, VERTICAL}
+    public boolean extendsEvents=false;
     @Override
     public View getView() {
         notifyView();
         return body;
     }
+
     @Override
-    public String getName(){
+    public String getName() {
         return "MatchingChildComponent";
     }
+
     @Override
     public void setPriority(int priority) {
-        this.priority=priority;
+        this.priority = priority;
     }
+
     @Override
     public int getPriority() {
         return priority;
     }
 
-    public boolean notifyView(){
-        if(body==null){
-            Log.d(LOGT,"body null");
+    @Override
+    public void viewSetting(LinearLayout.LayoutParams params) {
+        body.setLayoutParams(params);
+    }
+
+    public int getOrientation() {
+        return body.getOrientation();
+    }
+
+    public boolean notifyView() {
+        if (body == null) {
+            Log.d(LOGT, "body null");
             return false;
         }
-        for(int i=0; i<childList.size();i++){
-            if(childList.get(i)==null) {
-                Log.d(LOGT,"Child "+i+" null");
+        for (int i = 0; i < childList.size(); i++) {
+            if (childList.get(i) == null) {
+                Log.d(LOGT, "Child " + i + " null");
                 return false;
             }
             body.addView(childList.get(i).getView());
@@ -52,92 +66,79 @@ public abstract class MatchingChildComponent implements MatchingComponent{
         return true;
     }
 
-    public boolean swap(int in1, int in2) throws NullPointerException{
-        if(childList.get(in1)!=null && childList.get(in2)!=null){
-            MatchingComponent temp=childList.get(in1);
-            Collections.swap(childList,in1,in2);
+
+    public boolean swap(int in1, int in2) throws NullPointerException {
+        if (childList.get(in1) != null && childList.get(in2) != null) {
+            MatchingComponent temp = childList.get(in1);
+            Collections.swap(childList, in1, in2);
             return notifyView();
-        }
-        else{
+        } else {
             throw new NullPointerException("null");
         }
     }
 
-    public boolean remove(MatchingComponent view){
+    public boolean remove(MatchingComponent view) {
         return childList.remove(view);
     }
 
-    public boolean remove(int index){
-        MatchingComponent t=childList.remove(index);
-        if(t==null) return true;
+    public boolean remove(int index) {
+        MatchingComponent t = childList.remove(index);
+        if (t == null) return true;
         else return false;
     }
 
-    public boolean removeAdjustPriority(int index){
-        MatchingComponent t=childList.get(index);
-        if(t!=null){
-            for(int i=index+1; i<childList.size();i++){
-                childList.get(i).setPriority(childList.get(i-1).getPriority());
+    public boolean removeAdjustPriority(int index) {
+        MatchingComponent t = childList.get(index);
+        if (t != null) {
+            for (int i = index + 1; i < childList.size(); i++) {
+                childList.get(i).setPriority(childList.get(i - 1).getPriority());
             }
             childList.remove(index);
             return true;
-        }
-        else return false;
+        } else return false;
     }
 
     public boolean add(MatchingComponent view){
-        view.setPriority(childList.size());
+        view.setPriority(1 << childList.size());
         childList.add(view);
         return true;
     }
 
-    public MatchingComponent get(int index){return childList.get(index);}
+    /*
+    * using to bind parents event with params child
+    * */
+    public abstract boolean addComponent(MatchingChildComponent view) throws ClassCastException;
 
-    public void changeOrientation(orientation a){
-        LinearLayout.LayoutParams params=null;
-        if(a==orientation.HORIZONTAL){
-            if(body.getOrientation()==LinearLayout.HORIZONTAL)
-                return;
-            else{
-                params=new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.weight=1;
-                body.setLayoutParams(params);
-                body.setOrientation(LinearLayout.HORIZONTAL);
-            }
-        }
-        else if(a==orientation.VERTICAL){
-            if(body.getOrientation()==LinearLayout.VERTICAL)
-                return;
-            else{
-                params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, 0);
-                params.weight=1;
-                body.setLayoutParams(params);
-                body.setOrientation(LinearLayout.VERTICAL);
-            }
-        }
-
-        for (MatchingComponent mc: childList) {
-            if(mc.getName()=="Option"){
-                ((Option)mc).viewSetting(params);
-            }
-            else
-                ((MatchingChildComponent)mc).changeOrientation(a);
-        }
-        return;
+    public MatchingComponent get(int index) {
+        return childList.get(index);
     }
 
-    public abstract void config(Object ...params);
+    public abstract void changeOrientationAll(orientation a);
 
-    protected MatchingChildComponent(Context context){
-        body=new LinearLayout(context);
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    public abstract void changeOrientationOne(orientation a);
+
+    public abstract void cleanChildListener();
+
+    public abstract void config(Object... params);
+
+    protected MatchingChildComponent(Context context, int orientation) {
+        body = new LinearLayout(context);
+        LinearLayout.LayoutParams params;
+        if (orientation == LinearLayout.HORIZONTAL)
+            params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
+        else
+            params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+
+        params.weight = 1;
         body.setLayoutParams(params);
         body.setOrientation(LinearLayout.HORIZONTAL);
-        childList=new ArrayList<MatchingComponent>();
+        childList = new ArrayList<MatchingComponent>();
     }
+    protected ArrayList<MatchingComponent> eventee;
     protected ArrayList<MatchingComponent> childList;
     protected LinearLayout body;
     protected int priority;
 
-    private String LOGT="MCC";
+
+    private String LOGT = "MCC";
 }

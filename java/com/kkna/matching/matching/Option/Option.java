@@ -1,10 +1,7 @@
 package com.kkna.matching.matching.Option;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
-import com.kkna.matching.matching.MatchingChildComponent.MatchingChildComponent;
 import com.kkna.matching.matching.MatchingComponent;
+import com.kkna.matching.matching.MatchingData;
 
 /**
  * Option for GroupComponent
@@ -27,7 +24,7 @@ public abstract class Option implements MatchingComponent {
         return "Option";
     }
 
-    public abstract void viewSetting(LinearLayout.LayoutParams params);
-    public abstract void setData(Object p);
-    public abstract Object getData();
+    public abstract void cleanListener();
+    public abstract void setData(MatchingData p);
+    public abstract MatchingData getData();
 }
