@@ -15,12 +15,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by angks on 2017-01-11.
+ *
+ *  Matching child Component as M.C.C
+ *  this is the group of option and developer's unit
+ * <pre>
+ * <b>History:</b>
+ *    kkna, 01.03.2017 make class first
+ * </pre>
+ *
+ * @author KKNA
+ * @version 01.23.2017 make method comment
+ * @see    None
  */
 
 public abstract class MatchingChildComponent implements MatchingComponent {
+    //orientation for MCC
     public enum orientation {HORIZONTAL, VERTICAL}
+
+    //if this valu is true, then all it's child component activate at it's parents event call except MCC child
     public boolean extendsEvents=false;
+
     @Override
     public View getView() {
         notifyView();
@@ -51,6 +65,14 @@ public abstract class MatchingChildComponent implements MatchingComponent {
         return body.getOrientation();
     }
 
+
+    /**
+     * this method make it's all child implement them views
+     * return false= no view of child has no view
+     * retur true = has view
+     * @param void
+     * @return boolean
+     */
     public boolean notifyView() {
         if (body == null) {
             Log.d(LOGT, "body null");
@@ -66,7 +88,12 @@ public abstract class MatchingChildComponent implements MatchingComponent {
         return true;
     }
 
-
+    /**
+     * swap the child and view
+     *
+     * @param int index1, int index2
+     * @return boolean
+     */
     public boolean swap(int in1, int in2) throws NullPointerException {
         if (childList.get(in1) != null && childList.get(in2) != null) {
             MatchingComponent temp = childList.get(in1);
@@ -77,16 +104,33 @@ public abstract class MatchingChildComponent implements MatchingComponent {
         }
     }
 
+    /**
+     * remove child using MC. no change view. to Change view, should call notifyview
+     * @param MatchingComponent view
+     * @return boolean
+     */
     public boolean remove(MatchingComponent view) {
         return childList.remove(view);
     }
 
+
+    /**
+     * remove child using index. no change view. to Change view, should call notifyview
+     * @param int index
+     * @return boolean
+     */
     public boolean remove(int index) {
         MatchingComponent t = childList.remove(index);
         if (t == null) return true;
         else return false;
     }
 
+
+    /**
+     * remove child using index then pull the priority. no change view. to Change view, should call notifyview
+     * @param int index
+     * @return boolean
+     */
     public boolean removeAdjustPriority(int index) {
         MatchingComponent t = childList.get(index);
         if (t != null) {
@@ -98,29 +142,64 @@ public abstract class MatchingChildComponent implements MatchingComponent {
         } else return false;
     }
 
+    /**
+     * add MC
+     * @param MatchingComponent
+     * @return boolean
+     */
     public boolean add(MatchingComponent view){
         view.setPriority(1 << childList.size());
         childList.add(view);
         return true;
     }
 
-    /*
-    * using to bind parents event with params child
-    * */
+    /**
+     * make param belonging to this with param's child extend this event
+     * @param MatchingChildComponent View
+     * @return boolean
+     */
     public abstract boolean addComponent(MatchingChildComponent view) throws ClassCastException;
 
     public MatchingComponent get(int index) {
         return childList.get(index);
     }
 
+    /**
+     * change orientation this and this child
+     * @param orientation
+     * @return void
+     */
     public abstract void changeOrientationAll(orientation a);
 
+    /**
+     * change orientation this not child
+     * @param orientation
+     * @return void
+     */
     public abstract void changeOrientationOne(orientation a);
 
+
+    /**
+     * clean child event listener and listener list
+     * after call this function, should call config again
+     * @param void
+     * @return void
+     */
     public abstract void cleanChildListener();
 
+    /**
+     * the setting for specific each M.C.C
+     * ex) setting all child having default event listener etc...
+     * @param Object ... params
+     * @return void
+     */
     public abstract void config(Object... params);
 
+    /**
+     * constructor
+     * @param int index
+     * @return boolean
+     */
     protected MatchingChildComponent(Context context, int orientation) {
         body = new LinearLayout(context);
         LinearLayout.LayoutParams params;
@@ -134,9 +213,21 @@ public abstract class MatchingChildComponent implements MatchingComponent {
         body.setOrientation(LinearLayout.HORIZONTAL);
         childList = new ArrayList<MatchingComponent>();
     }
+
+    //eventee is the arrang for this MCC's event listener
     protected ArrayList<MatchingComponent> eventee;
+
+
+    //listener list for eventee
+    protected ArrayList listenerList;
+
+    //childList is the list of this MCC's child
     protected ArrayList<MatchingComponent> childList;
+
+    //body
     protected LinearLayout body;
+
+    //priority
     protected int priority;
 
 

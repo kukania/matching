@@ -31,12 +31,12 @@ public class MainActivity extends Activity {
         cpb.textSetting(0,"hello").textSetting(1,"world").textSetting(2,"fucking");
         cpb.valueSetting(0,new Test()).valueSetting(1,new Test()).valueSetting(2,new Test());
         cpb.changeOrientationOne(MatchingChildComponent.orientation.HORIZONTAL);
-
+        cpb.config("MultiSelect");
         ComponentButton cpb2=(ComponentButton)ComponentFactory.creator("Button",cpb.getOrientation(),this,2);
         for(int i=0; i<2; i++)cpb2.imgSetting(i, ContextCompat.getDrawable(this, R.drawable.nbtn),ContextCompat.getDrawable(this, R.drawable.sbtn));
         cpb2.textSetting(0,"t").textSetting(1,"e");
         cpb2.changeOrientationOne(MatchingChildComponent.orientation.HORIZONTAL);
-        cpb.addComponent(cpb2);
+        cpb.add(cpb2);
 
         cpb.changeOrientationAll(MatchingChildComponent.orientation.VERTICAL);
         body.addView(cpb.getView());
@@ -44,7 +44,12 @@ public class MainActivity extends Activity {
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(LOGT,cpb.getPacketData());
+                try{
+                    Log.d(LOGT,cpb.getPacketData());
+                }
+                catch (NullPointerException e){
+                    Log.d(LOGT,"null ptr exception");
+                }
             }
         });
     }
