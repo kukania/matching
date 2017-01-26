@@ -1,17 +1,17 @@
 package com.kkna.matching;
 
 import android.app.Activity;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import com.kkna.matching.matching.MatchingChildComponent.ComponentButton;
 import com.kkna.matching.matching.MatchingChildComponent.ComponentFactory;
+import com.kkna.matching.matching.MatchingChildComponent.ComponentHidden;
 import com.kkna.matching.matching.MatchingChildComponent.MatchingChildComponent;
+import com.kkna.matching.matching.MatchingData;
 
 public class MainActivity extends Activity {
     String LOGT="MAINACTIVITY";
@@ -39,8 +39,19 @@ public class MainActivity extends Activity {
         cpb.add(cpb2);
 
         cpb.changeOrientationAll(MatchingChildComponent.orientation.VERTICAL);
-        body.addView(cpb.getView());
 
+
+        ComponentHidden cph=(ComponentHidden)ComponentFactory.creator("Hidden",body.getOrientation(),this,1);
+        cph.config(0,"");
+        cph.valueSetting(0, new MatchingData() {
+            @Override
+            public String makeString() {
+                return "HFOH";
+            }
+        });
+
+        cpb.add(cph);
+        body.addView(cpb.getView());
         testBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

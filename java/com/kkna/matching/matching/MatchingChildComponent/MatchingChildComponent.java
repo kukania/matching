@@ -4,20 +4,16 @@ import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.kkna.matching.matching.MatchingComponent;
-import com.kkna.matching.matching.Option.Option;
-import com.kkna.matching.matching.Option.OptionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- *
- *  Matching child Component as M.C.C
- *  this is the group of option and developer's unit
+ * Matching child Component as M.C.C
+ * this is the group of option and developer's unit
  * <pre>
  * <b>History:</b>
  *    kkna, 01.03.2017 make class first
@@ -25,20 +21,24 @@ import java.util.Collections;
  *
  * @author KKNA
  * @version 01.23.2017 make method comment
- * @see    None
+ * @see None
  */
 
 public abstract class MatchingChildComponent implements MatchingComponent {
     //orientation for MCC
-    public enum orientation {HORIZONTAL, VERTICAL}
+    public enum orientation {
+        HORIZONTAL, VERTICAL
+    }
 
     //if this valu is true, then all it's child component activate at it's parents event call except MCC child
-    public boolean extendsEvents=false;
+    public boolean extendsEvents = false;
 
     @Override
     public View getView() {
-        notifyView();
-        return body;
+        if (notifyView())
+            return body;
+        else
+            return null;
     }
 
     @Override
@@ -70,22 +70,26 @@ public abstract class MatchingChildComponent implements MatchingComponent {
      * this method make it's all child implement them views
      * return false= no view of child has no view
      * retur true = has view
+     *
      * @param void
      * @return boolean
      */
     public boolean notifyView() {
-        if (body == null) {
-            Log.d(LOGT, "body null");
+        if (body != null) {
+            if(!viewChange)
+                return true;
+            viewChange=false;
+            for (MatchingComponent mc : childList) {
+                if (mc.getView() == null)
+                    continue;
+                else
+                    body.addView(mc.getView());
+            }
+            return true;
+        } else {
+            Log.d("null", "test");
             return false;
         }
-        for (int i = 0; i < childList.size(); i++) {
-            if (childList.get(i) == null) {
-                Log.d(LOGT, "Child " + i + " null");
-                return false;
-            }
-            body.addView(childList.get(i).getView());
-        }
-        return true;
     }
 
     /**
@@ -106,20 +110,24 @@ public abstract class MatchingChildComponent implements MatchingComponent {
 
     /**
      * remove child using MC. no change view. to Change view, should call notifyview
+     *
      * @param MatchingComponent view
      * @return boolean
      */
     public boolean remove(MatchingComponent view) {
+        viewChange=true;
         return childList.remove(view);
     }
 
 
     /**
      * remove child using index. no change view. to Change view, should call notifyview
+     *
      * @param int index
      * @return boolean
      */
     public boolean remove(int index) {
+        viewChange=true;
         MatchingComponent t = childList.remove(index);
         if (t == null) return true;
         else return false;
@@ -128,10 +136,12 @@ public abstract class MatchingChildComponent implements MatchingComponent {
 
     /**
      * remove child using index then pull the priority. no change view. to Change view, should call notifyview
+     *
      * @param int index
      * @return boolean
      */
     public boolean removeAdjustPriority(int index) {
+        viewChange=true;
         MatchingComponent t = childList.get(index);
         if (t != null) {
             for (int i = index + 1; i < childList.size(); i++) {
@@ -144,10 +154,12 @@ public abstract class MatchingChildComponent implements MatchingComponent {
 
     /**
      * add MC
+     *
      * @param MatchingComponent
      * @return boolean
      */
-    public boolean add(MatchingComponent view){
+    public boolean add(MatchingComponent view) {
+        viewChange=true;
         view.setPriority(1 << childList.size());
         childList.add(view);
         return true;
@@ -155,6 +167,7 @@ public abstract class MatchingChildComponent implements MatchingComponent {
 
     /**
      * make param belonging to this with param's child extend this event
+     *  must implements viewChange to true;
      * @param MatchingChildComponent View
      * @return boolean
      */
@@ -166,6 +179,7 @@ public abstract class MatchingChildComponent implements MatchingComponent {
 
     /**
      * change orientation this and this child
+     *
      * @param orientation
      * @return void
      */
@@ -173,6 +187,7 @@ public abstract class MatchingChildComponent implements MatchingComponent {
 
     /**
      * change orientation this not child
+     *
      * @param orientation
      * @return void
      */
@@ -182,6 +197,7 @@ public abstract class MatchingChildComponent implements MatchingComponent {
     /**
      * clean child event listener and listener list
      * after call this function, should call config again
+     *
      * @param void
      * @return void
      */
@@ -190,6 +206,7 @@ public abstract class MatchingChildComponent implements MatchingComponent {
     /**
      * the setting for specific each M.C.C
      * ex) setting all child having default event listener etc...
+     *
      * @param Object ... params
      * @return void
      */
@@ -197,6 +214,7 @@ public abstract class MatchingChildComponent implements MatchingComponent {
 
     /**
      * constructor
+     *
      * @param int index
      * @return boolean
      */
@@ -208,10 +226,11 @@ public abstract class MatchingChildComponent implements MatchingComponent {
         else
             params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
 
+        this.childList = new ArrayList<>();
+
         params.weight = 1;
         body.setLayoutParams(params);
         body.setOrientation(LinearLayout.HORIZONTAL);
-        childList = new ArrayList<MatchingComponent>();
     }
 
     //eventee is the arrang for this MCC's event listener
@@ -230,6 +249,6 @@ public abstract class MatchingChildComponent implements MatchingComponent {
     //priority
     protected int priority;
 
-
+    protected boolean viewChange=true;
     private String LOGT = "MCC";
 }

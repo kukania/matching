@@ -33,7 +33,7 @@ public interface MatchingComponent {
     public View getView();
 
     /**
-     *  get class name (option or M.C.C)
+     *  get class name (Option or MatchingChildComponent)
      * @param void
      * @return processed packet string
      */

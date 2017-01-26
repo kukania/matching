@@ -22,7 +22,7 @@ public class OptionFactory {
             return new OptionButton(text,parent,context);
         }
         else if(input.equals("Hidden")){
-            return new OptionHidden("Date");
+            return new OptionHidden(text);
         }
         return null;
     }
