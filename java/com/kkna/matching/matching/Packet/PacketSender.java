@@ -64,7 +64,7 @@ public class PacketSender {
     }
 
     private class HttpThread extends AsyncTask<Void, Void, Void>{
-        private static final String urlStr = "http://52.79.164.243/index.php";
+        private static final String urlStr = "http://52.79.164.243";
 
         @Override
         protected Void doInBackground(Void... voids) {
