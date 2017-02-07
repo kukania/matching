@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.kkna.matching.MainActivity">
+<<<<<<< HEAD
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
@@ -17,4 +18,12 @@
         android:text="push!!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+=======
+    <Button
+        android:id="@+id/testBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="show"
+        />
+>>>>>>> e27753e607f9f49dca3baa24d991ec930c5b5a2c
 </LinearLayout>

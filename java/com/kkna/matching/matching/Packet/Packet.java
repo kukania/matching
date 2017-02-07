@@ -1,6 +1,5 @@
 package com.kkna.matching.matching.Packet;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.kkna.matching.matching.MatchingComponent;
